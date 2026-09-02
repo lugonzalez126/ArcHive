@@ -31,6 +31,7 @@ class UserResponse(BaseModel):
     username: str
     created_at: datetime
     avatar_url: Optional[str] = None
+    role: str = "student"
     model_config = {"from_attributes": True}
 
 class UserUpdate(BaseModel):

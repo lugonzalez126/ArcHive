@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy.orm import Session
-from app.dependencies import get_db, get_current_user, get_optional_user
+from app.dependencies import get_db, get_current_user, get_current_instructor, get_optional_user
 from app.models.user import User
 from app.schemas.curriculum import CurriculumCreate, CurriculumUpdate, CurriculumResponse, CurriculumDetail, PaginatedCurriculumResponse
 from typing import Optional
@@ -31,15 +31,15 @@ def get_one(curriculum_id: uuid.UUID, db: Session = Depends(get_db), current_use
 
 
 @router.post("", response_model=CurriculumResponse)
-def create(data: CurriculumCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def create(data: CurriculumCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_instructor)):
     return create_curriculum(db=db, creator_id=current_user.id, data=data)
 
 
 @router.patch("/{curriculum_id}", response_model=CurriculumResponse)
-def update(curriculum_id: uuid.UUID, data: CurriculumUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def update(curriculum_id: uuid.UUID, data: CurriculumUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_instructor)):
     return update_curriculum(db=db, curriculum_id=curriculum_id, data=data, current_user=current_user)
 
 
 @router.delete("/{curriculum_id}")
-def delete(curriculum_id: uuid.UUID, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def delete(curriculum_id: uuid.UUID, db: Session = Depends(get_db), current_user: User = Depends(get_current_instructor)):
     return delete_curriculum(db=db, curriculum_id=curriculum_id, current_user=current_user)

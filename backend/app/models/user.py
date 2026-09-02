@@ -42,4 +42,9 @@ class User(Base):
     String(500),
     nullable=True
 )
+    role: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        server_default="student"
+    )
     curricula = relationship("Curriculum", back_populates="creator")
